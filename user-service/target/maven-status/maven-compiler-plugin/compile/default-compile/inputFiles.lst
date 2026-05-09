@@ -1,0 +1,15 @@
+C:\Users\LENOVO\Desktop\pfe-ww\user-service\src\main\java\com\pfe\user\controller\AuthController.java
+C:\Users\LENOVO\Desktop\pfe-ww\user-service\src\main\java\com\pfe\user\repository\UserRepository.java
+C:\Users\LENOVO\Desktop\pfe-ww\user-service\src\main\java\com\pfe\user\security\JwtUtil.java
+C:\Users\LENOVO\Desktop\pfe-ww\user-service\src\main\java\com\pfe\user\service\UserService.java
+C:\Users\LENOVO\Desktop\pfe-ww\user-service\src\main\java\com\pfe\user\UserServiceApplication.java
+C:\Users\LENOVO\Desktop\pfe-ww\user-service\src\main\java\com\pfe\user\security\SecurityConfig.java
+C:\Users\LENOVO\Desktop\pfe-ww\user-service\src\main\java\com\pfe\user\security\JwtAuthFilter.java
+C:\Users\LENOVO\Desktop\pfe-ww\user-service\src\main\java\com\pfe\user\controller\UserController.java
+C:\Users\LENOVO\Desktop\pfe-ww\user-service\src\main\java\com\pfe\user\security\CustomUserDetailsService.java
+C:\Users\LENOVO\Desktop\pfe-ww\user-service\src\main\java\com\pfe\user\dto\LoginRequest.java
+C:\Users\LENOVO\Desktop\pfe-ww\user-service\src\main\java\com\pfe\user\exception\GlobalExceptionHandler.java
+C:\Users\LENOVO\Desktop\pfe-ww\user-service\src\main\java\com\pfe\user\entity\User.java
+C:\Users\LENOVO\Desktop\pfe-ww\user-service\src\main\java\com\pfe\user\dto\AuthResponse.java
+C:\Users\LENOVO\Desktop\pfe-ww\user-service\src\main\java\com\pfe\user\dto\RegisterRequest.java
+C:\Users\LENOVO\Desktop\pfe-ww\user-service\src\main\java\com\pfe\user\entity\Role.java

@@ -1,0 +1,9 @@
+com\pfe\course\CourseServiceApplication.class
+com\pfe\course\entity\Course$CourseBuilder.class
+com\pfe\course\controller\CourseController.class
+com\pfe\course\repository\CourseRepository.class
+com\pfe\course\entity\Module.class
+com\pfe\course\entity\Course.class
+com\pfe\course\entity\Module$ModuleBuilder.class
+com\pfe\course\service\CourseService.class
+com\pfe\course\repository\ModuleRepository.class
