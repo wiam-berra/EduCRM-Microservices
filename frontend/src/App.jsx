@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import Login from './pages/Login';
@@ -12,9 +13,11 @@ import AiAnalysis from './pages/AiAnalysis';
 import Users from './pages/Users';
 import Profile from './pages/Profile';
 import MyProgress from './pages/MyProgress';
+import AccessibleChatbot from './components/AccessibleChatbot';
 
 function App() {
   return (
+    <ThemeProvider>
     <AuthProvider>
       <BrowserRouter>
         <Routes>
@@ -71,8 +74,15 @@ function App() {
 
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
+
+        {/* Chatbot accessible — visible sur toutes les pages protégées */}
+        <ProtectedRoute>
+          <AccessibleChatbot />
+        </ProtectedRoute>
+
       </BrowserRouter>
     </AuthProvider>
+    </ThemeProvider>
   );
 }
 

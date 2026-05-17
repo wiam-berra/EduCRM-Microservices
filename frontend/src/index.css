@@ -43,6 +43,20 @@
   --transition: 0.2s ease;
 }
 
+[data-theme='dark'] {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: #1e293b;
+  --bg-card-hover: #334155;
+  --bg-input: #0f172a;
+  --border: #334155;
+  --border-light: #475569;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+}
+
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { font-size: 14px; }
 

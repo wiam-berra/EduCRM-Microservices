@@ -1,7 +1,9 @@
 package com.pfe.ai.controller;
 
 import com.pfe.ai.dto.Alert;
+import com.pfe.ai.dto.ChatRequest;
 import com.pfe.ai.dto.StudentRiskResult;
+import com.pfe.ai.service.ChatbotService;
 import com.pfe.ai.service.RiskAnalysisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.Map;
 public class AiController {
 
     private final RiskAnalysisService riskAnalysisService;
+    private final ChatbotService chatbotService;
 
     @GetMapping("/risk-analysis")
     public ResponseEntity<List<StudentRiskResult>> analyzeAllStudents() {
@@ -35,5 +38,12 @@ public class AiController {
     @GetMapping("/dashboard")
     public ResponseEntity<Map<String, Object>> getDashboard() {
         return ResponseEntity.ok(riskAnalysisService.getDashboard());
+    }
+
+    // ─── Nouveau endpoint pour le chatbot accessible ───────────────────────
+    @PostMapping("/chat")
+    public ResponseEntity<Map<String, String>> chat(@RequestBody ChatRequest request) {
+        String reply = chatbotService.chat(request);
+        return ResponseEntity.ok(Map.of("reply", reply));
     }
 }

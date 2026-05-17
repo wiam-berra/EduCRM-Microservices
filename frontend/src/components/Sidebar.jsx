@@ -1,12 +1,15 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import {
   FiHome, FiUsers, FiBook, FiCalendar,
-  FiActivity, FiLogOut, FiUser, FiSettings, FiTrendingUp
+  FiActivity, FiLogOut, FiUser, FiSettings, FiTrendingUp,
+  FiSun, FiMoon
 } from 'react-icons/fi';
 
 const Sidebar = () => {
   const { user, logout, isAdmin, isProf, isStudent } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -76,10 +79,27 @@ const Sidebar = () => {
           </div>
         </div>
 
-        <button className="logout-btn" onClick={handleLogout}>
-          <FiLogOut />
-          <span>Déconnexion</span>
-        </button>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button 
+            className="logout-btn" 
+            onClick={toggleTheme}
+            style={{ 
+              background: 'rgba(255,255,255,0.1)', 
+              borderColor: 'transparent', 
+              color: '#fff',
+              flex: 1,
+              justifyContent: 'center'
+            }}
+            title={theme === 'light' ? 'Passer au mode sombre' : 'Passer au mode clair'}
+          >
+            {theme === 'light' ? <FiMoon /> : <FiSun />}
+          </button>
+
+          <button className="logout-btn" onClick={handleLogout} style={{ flex: 3 }}>
+            <FiLogOut />
+            <span>Déconnexion</span>
+          </button>
+        </div>
       </div>
     </aside>
   );

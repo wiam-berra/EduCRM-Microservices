@@ -92,6 +92,7 @@ export const aiAPI = {
   analyzeStudent: (id) => api.get(`/api/ai/risk-analysis/${id}`),
   getAlerts: () => api.get('/api/ai/alerts'),
   getDashboard: () => api.get('/api/ai/dashboard'),
+  chat: (data) => api.post('/api/ai/chat', data),
 };
 
 export default api;
