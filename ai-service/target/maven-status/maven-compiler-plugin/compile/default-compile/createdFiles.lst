@@ -4,6 +4,9 @@ com\pfe\ai\dto\StudentRiskResult.class
 com\pfe\ai\service\RiskAnalysisService$1.class
 com\pfe\ai\service\RiskAnalysisService$4.class
 com\pfe\ai\dto\Alert$AlertBuilder.class
+com\pfe\ai\dto\ChatRequest.class
+com\pfe\ai\service\ChatbotService.class
+com\pfe\ai\dto\ChatRequest$ChatMessage.class
 com\pfe\ai\controller\AiController.class
 com\pfe\ai\service\RiskAnalysisService.class
 com\pfe\ai\AiServiceApplication.class

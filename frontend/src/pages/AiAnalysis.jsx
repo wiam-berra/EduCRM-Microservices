@@ -9,49 +9,40 @@ import {
 const translateRecommendation = (text) => {
   if (!text) return '—';
 
-  const translations = [
-    { en: /URGENT.*low grades.*avg:\s*([\d.]+)\/20.*excessive absences.*(\d+).*Immediate academic counseling required\./i,
-      fr: (m) => `Notes insuffisantes (moy. : ${m[1]}/20) et ${m[2]} absences. Conseil académique urgent.` },
-    { en: /student has low academic performance \(avg:\s*([\d.]+)\/20\)\.\s*consider tutoring or additional support\./i,
-      fr: (m) => `Résultats faibles (moy. : ${m[1]}/20). Tutorat recommandé.` },
-    { en: /student has very low academic performance \(avg:\s*([\d.]+)\/20\)\.\s*immediate intervention required\./i,
-      fr: (m) => `Très faibles résultats (moy. : ${m[1]}/20). Intervention immédiate.` },
-    { en: /student has acceptable academic performance \(avg:\s*([\d.]+)\/20\)/i,
-      fr: (m) => `Résultats acceptables (moy. : ${m[1]}/20).` },
-    { en: /student is performing well \(avg:\s*([\d.]+)\/20\)/i,
-      fr: (m) => `Bons résultats (moy. : ${m[1]}/20).` },
-    { en: /high absence rate \(([\d.]+)%\)\.\s*contact student and parents\./i,
-      fr: (m) => `Taux d'absence élevé (${m[1]}%). Contacter l'étudiant et les parents.` },
-    { en: /critical absence rate \(([\d.]+)%\)\.\s*immediate action required\./i,
-      fr: (m) => `Taux d'absence critique (${m[1]}%). Action immédiate requise.` },
-    { en: /moderate absence rate \(([\d.]+)%\)\.\s*monitor closely\./i,
-      fr: (m) => `Taux d'absence modéré (${m[1]}%). À surveiller.` },
-    { en: /absence rate is acceptable \(([\d.]+)%\)/i,
-      fr: (m) => `Taux d'absence acceptable (${m[1]}%).` },
-    { en: /student is at critical risk due to both low grades and high absences\./i,
-      fr: () => `Risque critique : faibles notes et absences élevées.` },
-    { en: /student shows improvement but needs continued support\./i,
-      fr: () => `Amélioration en cours, suivi continu nécessaire.` },
-    { en: /no significant issues detected\.\s*keep monitoring\./i,
-      fr: () => `Aucun problème détecté. Continuer le suivi.` },
-    { en: /student performance is satisfactory\./i,
-      fr: () => `Résultats satisfaisants.` },
-    { en: /consider tutoring or additional support\./i,
-      fr: () => `Tutorat ou soutien supplémentaire recommandé.` },
-    { en: /immediate intervention required\./i,
-      fr: () => `Intervention immédiate nécessaire.` },
-    { en: /contact student and parents\./i,
-      fr: () => `Contacter l'étudiant et ses parents.` },
-    { en: /monitor closely\./i,
-      fr: () => `À surveiller de près.` },
-    { en: /keep monitoring\./i,
-      fr: () => `Continuer le suivi.` },
-  ];
-
-  for (const { en, fr } of translations) {
-    const match = text.match(en);
-    if (match) return fr(match);
+  // 1. CRITICAL — "URGENT: Student has low grades (avg: X/20) AND excessive absences (N). Immediate academic counseling required."
+  const criticalMatch = text.match(/URGENT.*low grades.*avg:\s*([\d.]+)\/20.*excessive absences.*?(\d+).*Immediate academic counseling required/i);
+  if (criticalMatch) {
+    return `Notes insuffisantes (moy. : ${criticalMatch[1]}/20) et ${criticalMatch[2]} absence(s). Conseil académique urgent.`;
   }
+
+  // 2. HIGH — "Student has low academic performance (avg: X/20). Consider tutoring or additional support."
+  const highMatch = text.match(/low academic performance.*avg:\s*([\d.]+)\/20.*Consider tutoring/i);
+  if (highMatch) {
+    return `Résultats académiques insuffisants (moy. : ${highMatch[1]}/20). Tutorat ou soutien supplémentaire recommandé.`;
+  }
+
+  // 3. MEDIUM — "Student has high absence rate (X%). Verify reasons and schedule a meeting."
+  const mediumMatch = text.match(/high absence rate.*?([\d.]+)%.*Verify reasons and schedule a meeting/i);
+  if (mediumMatch) {
+    return `Taux d'absence élevé (${mediumMatch[1]}%). Vérifier les raisons et planifier un entretien.`;
+  }
+
+  // 4. LOW — "Student is performing well. No intervention needed."
+  if (/performing well.*No intervention needed/i.test(text)) {
+    return `L'étudiant progresse bien. Aucune intervention nécessaire.`;
+  }
+
+  // Fallback génériques
+  if (/no intervention needed/i.test(text))               return `Aucune intervention nécessaire.`;
+  if (/immediate academic counseling/i.test(text))        return `Conseil académique immédiat requis.`;
+  if (/consider tutoring/i.test(text))                    return `Tutorat ou soutien supplémentaire recommandé.`;
+  if (/verify reasons and schedule a meeting/i.test(text))return `Vérifier les raisons et planifier un entretien.`;
+  if (/immediate action required/i.test(text))            return `Action immédiate requise.`;
+  if (/contact student and parents/i.test(text))          return `Contacter l'étudiant et ses parents.`;
+  if (/monitor closely/i.test(text))                      return `À surveiller de près.`;
+  if (/keep monitoring/i.test(text))                      return `Continuer le suivi.`;
+  if (/student is performing well/i.test(text))           return `L'étudiant progresse bien.`;
+
   return text;
 };
 
