@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { studentsAPI, coursesAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
-import { FiPlus, FiEdit2, FiTrash2, FiEye, FiX, FiSearch, FiBook, FiAward, FiUser, FiCalendar } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiEye, FiX, FiSearch, FiBook, FiAward, FiUser } from 'react-icons/fi';
 
 const Students = () => {
   const { isAdmin, isProf } = useAuth();
@@ -69,9 +69,19 @@ const Students = () => {
   };
 
   const viewDetail = async (student) => {
-    setShowDetail(student);
+    // Réinitialiser grades ET gradeForm AVANT d'ouvrir le modal pour éviter
+    // que les grades de l'étudiant précédent filtrent les cours disponibles
     setGrades([]);
+    setGradeForm({ courseId: '', value: '', semester: '' });
+    setShowDetail(student);
     try {
+      // Recharger les cours si la liste est vide (ex: échec initial de l'API)
+      if (courses.length === 0) {
+        try {
+          const cRes = await coursesAPI.getAll();
+          setCourses(cRes.data);
+        } catch { /* silencieux */ }
+      }
       const res = await studentsAPI.getGrades(student.id);
       setGrades(res.data);
     } catch { setGrades([]); }
@@ -93,18 +103,18 @@ const Students = () => {
     finally { setAddingGrade(false); }
   };
 
-  // Trouve le nom du cours par ID
+  // Trouve le nom du cours par ID (normaliser les types pour éviter mismatch string/number)
   const getCourseName = (courseId) => {
-    const course = courses.find(c => c.id === courseId);
+    const course = courses.find(c => Number(c.id) === Number(courseId));
     return course ? course.name : `Cours #${courseId}`;
   };
 
   // Semestres disponibles
   const semesters = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6'];
 
-  // Cours déjà notés pour cet étudiant
-  const gradedCourseIds = grades.map(g => g.courseId);
-  const availableCourses = courses.filter(c => !gradedCourseIds.includes(c.id));
+  // Afficher TOUS les cours dans le dropdown (le backend autorise plusieurs notes par cours,
+  // une par semestre - pas de filtrage côté client)
+  const availableCourses = courses;
 
   const filteredStudents = students.filter(s =>
     !search ||
@@ -399,7 +409,7 @@ const Students = () => {
                           </option>
                         ))}
                         {availableCourses.length === 0 && (
-                          <option disabled>Tous les cours ont une note</option>
+                          <option disabled>Aucun cours disponible</option>
                         )}
                       </select>
                     </div>
@@ -435,7 +445,7 @@ const Students = () => {
                     <button
                       type="submit"
                       className="btn btn-primary"
-                      disabled={addingGrade || availableCourses.length === 0}
+                      disabled={addingGrade}
                       style={{ alignSelf: 'flex-end' }}
                     >
                       {addingGrade ? '...' : <><FiPlus /> Ajouter</>}

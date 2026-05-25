@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
@@ -15,13 +15,19 @@ import Profile from './pages/Profile';
 import MyProgress from './pages/MyProgress';
 import AccessibleChatbot from './components/AccessibleChatbot';
 
+// Chatbot conditionnel — uniquement si l'utilisateur est connecté
+const ConditionalChatbot = () => {
+  const { isAuthenticated, loading } = useAuth();
+  if (loading || !isAuthenticated) return null;
+  return <AccessibleChatbot />;
+};
+
 function App() {
   return (
     <ThemeProvider>
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Public routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
@@ -76,9 +82,7 @@ function App() {
         </Routes>
 
         {/* Chatbot accessible — visible sur toutes les pages protégées */}
-        <ProtectedRoute>
-          <AccessibleChatbot />
-        </ProtectedRoute>
+        <ConditionalChatbot />
 
       </BrowserRouter>
     </AuthProvider>
