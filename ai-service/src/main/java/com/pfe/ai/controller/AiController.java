@@ -19,6 +19,7 @@ public class AiController {
 
     private final RiskAnalysisService riskAnalysisService;
     private final ChatbotService chatbotService;
+    private final com.pfe.ai.service.MlRiskPredictionService mlRiskPredictionService;
 
     @GetMapping("/risk-analysis")
     public ResponseEntity<List<StudentRiskResult>> analyzeAllStudents() {
@@ -38,6 +39,11 @@ public class AiController {
     @GetMapping("/dashboard")
     public ResponseEntity<Map<String, Object>> getDashboard() {
         return ResponseEntity.ok(riskAnalysisService.getDashboard());
+    }
+
+    @PostMapping("/predict-risk")
+    public ResponseEntity<com.pfe.ai.dto.RiskPredictionResponse> predictRisk(@RequestBody com.pfe.ai.dto.RiskPredictionRequest request) {
+        return ResponseEntity.ok(mlRiskPredictionService.predictRisk(request));
     }
 
     // ─── Nouveau endpoint pour le chatbot accessible ───────────────────────

@@ -1,8 +1,11 @@
+C:\Users\LENOVO\Desktop\pfe-ww\ai-service\src\main\java\com\pfe\ai\service\MlRiskPredictionService.java
 C:\Users\LENOVO\Desktop\pfe-ww\ai-service\src\main\java\com\pfe\ai\config\WebClientConfig.java
 C:\Users\LENOVO\Desktop\pfe-ww\ai-service\src\main\java\com\pfe\ai\dto\ChatRequest.java
+C:\Users\LENOVO\Desktop\pfe-ww\ai-service\src\main\java\com\pfe\ai\dto\RiskPredictionRequest.java
 C:\Users\LENOVO\Desktop\pfe-ww\ai-service\src\main\java\com\pfe\ai\dto\Alert.java
 C:\Users\LENOVO\Desktop\pfe-ww\ai-service\src\main\java\com\pfe\ai\controller\AiController.java
 C:\Users\LENOVO\Desktop\pfe-ww\ai-service\src\main\java\com\pfe\ai\service\RiskAnalysisService.java
+C:\Users\LENOVO\Desktop\pfe-ww\ai-service\src\main\java\com\pfe\ai\dto\RiskPredictionResponse.java
 C:\Users\LENOVO\Desktop\pfe-ww\ai-service\src\main\java\com\pfe\ai\AiServiceApplication.java
 C:\Users\LENOVO\Desktop\pfe-ww\ai-service\src\main\java\com\pfe\ai\dto\StudentRiskResult.java
 C:\Users\LENOVO\Desktop\pfe-ww\ai-service\src\main\java\com\pfe\ai\service\ChatbotService.java

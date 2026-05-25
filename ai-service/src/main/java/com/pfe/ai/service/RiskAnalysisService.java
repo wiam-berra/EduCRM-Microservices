@@ -13,12 +13,19 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.pfe.ai.dto.RiskPredictionRequest;
+import com.pfe.ai.dto.RiskPredictionResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class RiskAnalysisService {
 
     private final WebClient.Builder webClientBuilder;
+    private final MlRiskPredictionService mlRiskPredictionService;
 
     @Value("${services.student-url}")
     private String studentServiceUrl;
@@ -117,34 +124,36 @@ public class RiskAnalysisService {
             log.warn("Could not get attendance for student {}: {}", studentId, e.getMessage());
         }
 
-        // Apply risk rules
+        // Fetch other useful data like validated courses, lates, participation if available from other services
+        // For now, we will simulate or pass defaults if not available
+        Long lateCount = 0L;
+        Long validatedCourses = 0L;
+        Double participationScore = 80.0; // Default good participation
+
+        RiskPredictionRequest request = RiskPredictionRequest.builder()
+                .averageGrade(average)
+                .absenceCount(totalAbsences)
+                .attendanceRate(100.0 - absenceRate) // Convert absence rate to attendance rate
+                .lateCount(lateCount)
+                .validatedCourses(validatedCourses)
+                .participationScore(participationScore)
+                .build();
+
+        RiskPredictionResponse mlResponse = mlRiskPredictionService.predictRisk(request);
+
+        String riskLevel = mlResponse.getRiskLevel();
+        String recommendation = mlResponse.getRecommendation();
+        
+        // Derive category based on features for legacy support
+        String riskCategory = "NONE";
         boolean academicRisk = average < 10.0;
-        boolean attendanceRisk = totalAbsences > 5 || absenceRate > 30.0;
-
-        String riskCategory;
-        String riskLevel;
-        String recommendation;
-
+        boolean attendanceRisk = totalAbsences > 5;
         if (academicRisk && attendanceRisk) {
             riskCategory = "BOTH";
-            riskLevel = "CRITICAL";
-            recommendation = "URGENT: Student has low grades (avg: " + average +
-                    "/20) AND excessive absences (" + totalAbsences +
-                    "). Immediate academic counseling required.";
         } else if (academicRisk) {
             riskCategory = "ACADEMIC";
-            riskLevel = "HIGH";
-            recommendation = "Student has low academic performance (avg: " + average +
-                    "/20). Consider tutoring or additional support.";
         } else if (attendanceRisk) {
             riskCategory = "ATTENDANCE";
-            riskLevel = "MEDIUM";
-            recommendation = "Student has high absence rate (" + absenceRate +
-                    "%). Verify reasons and schedule a meeting.";
-        } else {
-            riskCategory = "NONE";
-            riskLevel = "LOW";
-            recommendation = "Student is performing well. No intervention needed.";
         }
 
         return StudentRiskResult.builder()
